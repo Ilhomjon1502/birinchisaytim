@@ -1,0 +1,4 @@
+# Oddiy statik sayt: yig'ish (build) shart emas, fayllar shu papkadan chiqariladi
+[build]
+  publish = "."
+  command = ""
