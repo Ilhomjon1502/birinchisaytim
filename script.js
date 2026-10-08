@@ -26,7 +26,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
     applyTheme(next);
     saveTheme(next);
+    // Ikonkani aylantirish (ketma-ket bosilganda ham qayta ishlaydi)
+    btn.classList.remove("spin");
+    void btn.offsetWidth;
+    btn.classList.add("spin");
   });
+
+  // Skroll qilganda elementlarni silliq ko'rsatish
+  const revealItems = document.querySelectorAll(".hero-grid > div, .section-head, .about-item, .service, .contact-box");
+  if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.15 });
+
+    revealItems.forEach(el => {
+      // Yonma-yon kartalar birin-ketin chiqadi
+      const index = [...el.parentElement.children].indexOf(el);
+      el.style.setProperty("--d", index * 0.12 + "s");
+      el.classList.add("reveal");
+      observer.observe(el);
+    });
+  }
 
   // Footerdagi yilni avtomatik yangilash
   document.getElementById("year").textContent = new Date().getFullYear();

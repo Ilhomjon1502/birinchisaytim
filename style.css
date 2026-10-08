@@ -191,7 +191,7 @@ section { padding: 80px 0; }
   display: flex; align-items: center; gap: 12px;
   background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .25);
   padding: 16px 24px; border-radius: 16px; font-weight: 600; text-align: left;
-  transition: background .15s ease;
+  transition: background .15s ease, transform .15s ease;
 }
 .contact-link:hover { background: rgba(255, 255, 255, .22); }
 .contact-link small { display: block; font-weight: 500; opacity: .75; font-size: 0.8rem; }
@@ -219,7 +219,50 @@ footer a { color: var(--primary); font-weight: 600; }
 .fs.gh { color: var(--gh); }
 .fs.phone { color: var(--green); }
 
+/* Orqa fon: sekin suzuvchi, goh ravshan, goh xira rangli dog'lar */
+.bg-glow { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.bg-glow span {
+  position: absolute; width: 60vmax; height: 60vmax; border-radius: 50%;
+  animation: glow 18s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+.bg-glow span:nth-child(1) { background: radial-gradient(circle, var(--blob-a), transparent 65%); top: -20vmax; left: -18vmax; }
+.bg-glow span:nth-child(2) { background: radial-gradient(circle, var(--blob-b), transparent 65%); top: 25%; right: -22vmax; animation-duration: 22s; animation-delay: -7s; }
+.bg-glow span:nth-child(3) { background: radial-gradient(circle, var(--green), transparent 60%); bottom: -25vmax; left: 15%; animation-name: glow-soft; animation-duration: 26s; animation-delay: -12s; }
+@keyframes glow {
+  0% { transform: translate(0, 0) scale(1); opacity: .3; }
+  50% { transform: translate(8vmax, 6vmax) scale(1.15); opacity: .65; }
+  100% { transform: translate(-4vmax, 10vmax) scale(.95); opacity: .35; }
+}
+@keyframes glow-soft {
+  0% { transform: translate(0, 0) scale(1); opacity: .08; }
+  50% { transform: translate(-6vmax, -8vmax) scale(1.1); opacity: .22; }
+  100% { transform: translate(6vmax, -4vmax) scale(.95); opacity: .1; }
+}
+
+/* Skroll qilganda paydo bo'lish (sinflarni script.js qo'shadi) */
+.reveal:not(.visible) { opacity: 0; }
+.reveal.visible { animation: rise .7s cubic-bezier(.2, .7, .2, 1) var(--d, 0s) backwards; }
+@keyframes rise { from { opacity: 0; translate: 0 28px; } }
+
+/* Menyu orqali o'tganda sarlavha header ostida qolmasin */
+section[id] { scroll-margin-top: 68px; }
+
+/* Bosilganda kichrayish */
+.btn:active, .social:active, .fs:active, .contact-link:active, .theme-toggle:active { transform: scale(.96); }
+.theme-toggle.spin { animation: spin .5s ease; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .bg-glow span, .theme-toggle.spin, .reveal.visible { animation: none; }
+}
+
 /* Responsive */
+/* O'rta ekranlarda "Magistr" kartochkasi ekrandan chiqib ketmasin */
+@media (max-width: 1120px) {
+  .float.f2 { right: -16px; }
+}
 @media (max-width: 860px) {
   .hero { padding: 56px 0 48px; }
   .hero-grid, .services-grid { grid-template-columns: 1fr; }
